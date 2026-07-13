@@ -110,6 +110,10 @@ h1 em, .footer h2 em { display: inline-block; color: var(--acid); font-style: no
 
 .section { padding: 94px 56px 110px; border-bottom: 1px solid var(--line); scroll-margin-top: 71px; }
 .section-heading { max-width: 740px; margin-bottom: 38px; }
+#works { padding-bottom: 107px; }
+#works .section-heading { margin-bottom: 41px; }
+#docs { padding-bottom: 199px; }
+#docs .section-heading { margin-bottom: 50px; }
 .section-heading h2, .footer h2 { margin: 14px 0 0; font-size: 42px; font-weight: 900; line-height: 1.05; letter-spacing: -.05em; }
 .section-heading > p:last-child, .pricing-heading p { color: var(--muted); font-size: 12px; line-height: 1.75; }
 .split-heading, .pricing-heading, .docs-heading { max-width: none; display: flex; align-items: flex-end; justify-content: space-between; gap: 44px; }
@@ -170,7 +174,7 @@ h1 em, .footer h2 em { display: inline-block; color: var(--acid); font-style: no
 #pricing { padding-top: 76px; }
 #pricing .section-heading { margin-bottom: 20px; }
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-.price-card { height: 405px; min-height: 0; padding: 27px 31px; display: flex; flex-direction: column; border: 1px solid var(--line); border-right: 0; background: rgba(13,18,14,.75); }
+.price-card { height: 430px; min-height: 0; padding: 27px 31px; display: flex; flex-direction: column; border: 1px solid var(--line); border-right: 0; background: rgba(13,18,14,.75); }
 .price-card:last-child { border-right: 1px solid var(--line); }
 .price-card.featured { background: var(--acid); color: var(--ink); border-color: var(--acid); }
 .plan-name { margin: 0; color: var(--muted); font-family: var(--font-geist-mono), monospace; font-size: 9px; }
@@ -190,7 +194,7 @@ h1 em, .footer h2 em { display: inline-block; color: var(--acid); font-style: no
 .pricing-notes { padding-top: 18px; display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-family: var(--font-geist-mono), monospace; font-size: 8px; }
 .pricing-notes a { color: var(--acid); }
 
-.philosophy { min-height: 430px; margin-top: 13px; padding: 0; display: grid; grid-template-columns: 48% 52%; border: 0; background: #eceee4; color: var(--ink); }
+.philosophy { min-height: 459px; margin-top: 20px; padding: 0; display: grid; grid-template-columns: 48% 52%; border: 0; background: #eceee4; color: var(--ink); }
 .philosophy-side { padding: 72px 56px; border-right: 1px solid rgba(13,18,14,.1); }
 .philosophy .section-index { color: #6f776c; }
 .philosophy-symbol { width: 46px; height: 46px; margin-top: 34px; display: grid; place-items: center; border: 1px solid rgba(13,18,14,.15); border-radius: 50%; }
@@ -202,7 +206,7 @@ h1 em, .footer h2 em { display: inline-block; color: var(--acid); font-style: no
 .principles h3 { margin: 11px 0 8px; font-size: 14px; }
 .principles p { margin: 0; color: #6e756b; font-size: 9px; line-height: 1.7; }
 
-.footer { padding: 62px 56px 0; }
+.footer { padding: 81px 56px 0; }
 .footer h2 { max-width: 650px; margin-top: 14px; font-size: 36px; }
 .footer h2 em { color: var(--paper); }
 .contact-button { float: right; min-width: 220px; min-height: auto; margin-top: -55px; padding: 10px 0; border: 0; border-bottom: 1px solid var(--acid); background: transparent; color: var(--acid); font-family: var(--font-geist-mono), monospace; font-size: 10px; }
