@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1784039867652,
+      "tag": "0000_grey_franklin_richards",
+      "breakpoints": true
+    }
+  ]
 }

@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: gofriends
+      MYSQL_USER: gofriends
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-root-password}
+    volumes:
+      - gofriends_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-change-root-password}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: mysql://gofriends:${MYSQL_PASSWORD:-change-me}@db:3306/gofriends
+    ports:
+      - "8081:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  gofriends_mysql:

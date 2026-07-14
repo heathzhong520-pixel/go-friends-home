@@ -7,6 +7,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+FROM ${NODE_IMAGE} AS production-dependencies
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
 FROM ${NODE_IMAGE} AS builder
 
 WORKDIR /app
@@ -31,9 +38,12 @@ RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 gofriends
 
 COPY --from=builder --chown=gofriends:nodejs /app/dist/standalone ./
+COPY --from=production-dependencies --chown=gofriends:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=gofriends:nodejs /app/drizzle ./drizzle
+COPY --from=builder --chown=gofriends:nodejs /app/scripts/bootstrap.mjs ./scripts/bootstrap.mjs
 
 USER gofriends
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "node scripts/bootstrap.mjs && node server.js"]

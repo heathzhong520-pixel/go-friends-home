@@ -5,6 +5,9 @@
 node_modules
 dist
 coverage
+.env*
+playwright-report
+test-results
 npm-debug.log*
 Dockerfile*
 README.md

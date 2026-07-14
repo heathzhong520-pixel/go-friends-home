@@ -1,11 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { AccountLinks } from "../components/account-links";
 
 type WorkCategory = "全部" | "桌面工具" | "网页应用" | "开发工具";
 
 const works = [
   {
+    slug: "nexus-desk",
     mark: "N/",
     name: "NEXUS / Desk",
     status: "稳定版",
@@ -14,6 +17,7 @@ const works = [
     meta: "v2.4.1  ·  macOS · Windows  ·  更新于 2026.07.08",
   },
   {
+    slug: "clarity",
     mark: "C.",
     name: "Clarity",
     status: "新发布",
@@ -22,6 +26,7 @@ const works = [
     meta: "v1.8.0  ·  macOS  ·  更新于 2026.06.24",
   },
   {
+    slug: "sitefoundry",
     mark: "SF",
     name: "SiteFoundry",
     status: "测试版",
@@ -30,6 +35,7 @@ const works = [
     meta: "v0.9.6  ·  Web · CLI  ·  更新于 2026.06.02",
   },
   {
+    slug: "lighthouse",
     mark: "LH",
     name: "Lighthouse",
     status: "稳定版",
@@ -120,7 +126,7 @@ export default function Home() {
     <main id="top">
       <header className="site-header">
         <a className="brand" href="#top" aria-label="GoFriends home" onClick={closeMenu}>
-          <span className="brand-mark">●</span>
+          <span className="brand-mark" aria-hidden="true" />
           <span>GoFriends</span>
         </a>
         <button className="menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="打开导航">
@@ -133,8 +139,7 @@ export default function Home() {
           <a href="#about" onClick={closeMenu}>关于我</a>
           <a href="#notes" onClick={closeMenu}>更新日志</a>
           <a className="nav-github" href="https://github.com/heathzhong520-pixel" target="_blank" rel="noreferrer">GitHub ↗</a>
-          <button className="nav-text-button" type="button">登录</button>
-          <button className="button button-small" type="button">注册</button>
+          <AccountLinks />
           <button className="language" type="button">◎ EN</button>
         </nav>
       </header>
@@ -183,7 +188,7 @@ export default function Home() {
                 <p>{work.description}</p>
                 <small>{work.meta}</small>
               </div>
-              <button type="button" className="card-action">下载 <span>↓</span></button>
+              <a className="card-action" href={`/products/${work.slug}`}>详情 <span>→</span></a>
             </article>
           ))}
         </div>
@@ -230,7 +235,7 @@ export default function Home() {
               <p className="effective">{yearly ? `约 ¥${Math.round(plan.yearly / 12)} / 月` : "按月灵活订阅"}</p>
               <p className="plan-note">{plan.note}</p>
               <ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul>
-              <button className={plan.featured ? "button" : "button button-ghost"} type="button">订阅{plan.name} <span>→</span></button>
+              <Link className={plan.featured ? "button" : "button button-ghost"} href="/products">查看可订阅产品 <span>→</span></Link>
             </article>
           ))}
         </div>
@@ -256,7 +261,7 @@ export default function Home() {
         <p className="section-index">保持联系</p>
         <h2>有想法，或者发现了问题？<br /><em>直接来找我。</em></h2>
         <a className="button contact-button" href="mailto:hello@gofriends.dev">hello@gofriends.dev <span>↗</span></a>
-        <div className="footer-meta"><span>© 2026 GoFriends · Built independently.</span><span>隐私优先</span><span>v3.0.0</span></div>
+        <div className="footer-meta"><span>© 2026 GoFriends · Built independently.</span><span><a href="/legal/privacy">隐私政策</a> · <a href="/legal/terms">用户协议</a> · <a href="/legal/refund">退款政策</a></span><span>v3.0.0</span></div>
       </footer>
     </main>
   );
