@@ -44,6 +44,10 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    // React 19 treats any truthy Console.createTask as a working implementation.
+    // Current workerd exposes a throwing placeholder, including inside the
+    // separate SSR runner where the Worker entry cannot patch the global.
+    define: { "console.createTask": "undefined" },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
