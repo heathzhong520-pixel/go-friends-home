@@ -3,7 +3,7 @@ services:
     image: mysql:8.4
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: gofriends
+      MYSQL_DATABASE: gofriends-home
       MYSQL_USER: gofriends
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-root-password}
@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      DATABASE_URL: mysql://gofriends:${MYSQL_PASSWORD:-change-me}@db:3306/gofriends
+      DATABASE_URL: mysql://gofriends:${MYSQL_PASSWORD:-change-me}@db:3306/gofriends-home
     ports:
       - "8081:3000"
     depends_on:

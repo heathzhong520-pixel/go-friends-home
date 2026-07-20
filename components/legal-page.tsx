@@ -1,6 +1,10 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { LanguageSwitcher } from "./language-switcher";
+import { getDictionary } from "../lib/i18n";
+import { getServerLocale } from "../lib/i18n-server";
 
-export function LegalPage({ eyebrow, title, children }: { eyebrow: string; title: string; children: ReactNode }) {
-  return <main className="legal-page shell"><header><Link className="inline-link" href="/">← 返回官网</Link><p className="section-index">{eyebrow}</p><h1>{title}</h1><p>生效日期：2026 年 7 月 14 日 · 版本：2026-07-14</p></header><article>{children}</article><footer><p>如有疑问，请联系 <a href="mailto:hello@gofriends.dev">hello@gofriends.dev</a></p></footer></main>;
+export async function LegalPage({ kind }: { kind: "privacy" | "terms" | "refund" }) {
+  const dictionary = getDictionary(await getServerLocale());
+  const copy = dictionary.legal[kind];
+  return <main className="legal-page shell"><header><div className="page-actions"><LanguageSwitcher /></div><Link className="inline-link" href="/">← {dictionary.common.backHome}</Link><p className="section-index">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{dictionary.legal.effective}</p></header><article>{copy.sections.map(([title, body]) => <section key={title}><h2>{title}</h2><p>{body}</p></section>)}</article><footer><p>{dictionary.legal.contact} <a href="mailto:hello@gofriends.dev">hello@gofriends.dev</a></p></footer></main>;
 }

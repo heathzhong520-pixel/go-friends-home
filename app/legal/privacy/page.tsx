@@ -1,8 +1,2 @@
 import { LegalPage } from "../../../components/legal-page";
-export default function PrivacyPage() { return <LegalPage eyebrow="LEGAL / PRIVACY" title="隐私政策">
-  <h2>我们收集的信息</h2><p>为提供账号、购买、授权、下载和客户支持服务，我们会处理你的称呼、邮箱、加密后的密码、登录会话、经过哈希处理的网络地址、订单与支付状态、授权信息及下载记录。我们不会保存支付宝或微信支付密码、银行卡号等支付凭据。</p>
-  <h2>使用目的</h2><p>这些信息用于验证身份、保护账号、完成订单、发放授权、提供安装包、发送必要通知、处理退款、分析服务稳定性并防止欺诈。</p>
-  <h2>服务提供方</h2><p>数据可能由阿里云 RDS、阿里云 OSS、邮件服务商、支付宝、微信支付、Sentry 和 Umami 按各自职责处理。我们仅共享完成对应服务所必需的信息。</p>
-  <h2>保存与安全</h2><p>密码使用带随机盐的强哈希保存；登录 Cookie 采用 HttpOnly 和 SameSite 保护。订单和法定留存信息按适用要求保存，失效会话和重置令牌会定期清理。</p>
-  <h2>你的权利</h2><p>你可以请求查询、更正或删除个人资料，也可以撤回非必要通知。涉及订单、发票或争议处理的信息可能依法继续保存。</p>
-</LegalPage>; }
+export default function PrivacyPage() { return <LegalPage kind="privacy" />; }

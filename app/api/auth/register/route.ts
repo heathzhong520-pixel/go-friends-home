@@ -6,6 +6,7 @@ import { AuthError, issueAuthToken } from "../../../../lib/auth";
 import { errorResponse, json, readJson } from "../../../../lib/http";
 import { absoluteUrl, sendMail } from "../../../../lib/mail";
 import { assertSameOrigin, hashPassword, hashedRequestIp } from "../../../../lib/security";
+import { getDictionary, getRequestLocale } from "../../../../lib/i18n";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -15,6 +16,8 @@ const schema = z.object({
 });
 
 export async function POST(request: Request) {
+  const locale = getRequestLocale(request);
+  const copy = getDictionary(locale);
   try {
     assertSameOrigin(request);
     const input = schema.parse(await readJson(request));
@@ -42,12 +45,13 @@ export async function POST(request: Request) {
     const verificationUrl = absoluteUrl(`/verify-email?token=${encodeURIComponent(token)}`);
     await sendMail({
       to: input.email,
-      subject: "验证你的 GoFriends 邮箱",
-      text: `请在 24 小时内打开此链接完成验证：${verificationUrl}`,
-      html: `<p>欢迎加入 GoFriends。</p><p><a href="${verificationUrl}">验证邮箱</a></p><p>链接 24 小时内有效。</p>`,
+      subject: locale === "en" ? "Verify your GoFriends email" : "验证你的 GoFriends 邮箱",
+      text: locale === "en" ? `Open this link within 24 hours to verify your email: ${verificationUrl}` : `请在 24 小时内打开此链接完成验证：${verificationUrl}`,
+      html: locale === "en" ? `<p>Welcome to GoFriends.</p><p><a href="${verificationUrl}">Verify email</a></p><p>This link is valid for 24 hours.</p>` : `<p>欢迎加入 GoFriends。</p><p><a href="${verificationUrl}">验证邮箱</a></p><p>链接 24 小时内有效。</p>`,
     });
-    return json({ ok: true, message: "注册成功，请检查邮箱完成验证", ...(process.env.NODE_ENV !== "production" ? { verificationUrl } : {}) }, { status: 201 });
+    const exposeVerificationUrl = process.env.NODE_ENV !== "production" || process.env.AUTH_TEST_MODE === "true";
+    return json({ ok: true, message: copy.errors.registerSuccess, ...(exposeVerificationUrl ? { verificationUrl } : {}) }, { status: 201 });
   } catch (error) {
-    return errorResponse(error);
+    return errorResponse(error, request);
   }
 }

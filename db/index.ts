@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import { resolveDatabaseUrl } from "../lib/database-url";
 import * as schema from "./schema";
 
 declare global {
@@ -7,8 +8,7 @@ declare global {
 }
 
 export function getPool() {
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) throw new Error("DATABASE_URL is not configured");
+  const databaseUrl = resolveDatabaseUrl();
 
   globalThis.__gofriendsMysqlPool ??= mysql.createPool({
     uri: databaseUrl,

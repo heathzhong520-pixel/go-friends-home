@@ -28,6 +28,6 @@ export async function POST(request: Request) {
     const session = await createSession(user.id, request);
     return json({ ok: true, user: { id: user.id, email: user.email, name: user.name } }, { headers: { "set-cookie": sessionCookie(session.token) } });
   } catch (error) {
-    return errorResponse(error);
+    return errorResponse(error, request);
   }
 }

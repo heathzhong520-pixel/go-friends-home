@@ -7,5 +7,5 @@ export async function POST(request: Request) {
     assertSameOrigin(request);
     await destroySession(request);
     return json({ ok: true }, { headers: { "set-cookie": clearSessionCookie() } });
-  } catch (error) { return errorResponse(error); }
+  } catch (error) { return errorResponse(error, request); }
 }
