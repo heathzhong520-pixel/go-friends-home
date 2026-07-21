@@ -17,6 +17,10 @@ export default function Home() {
   const [category, setCategory] = useState<WorkCategory>("all");
   const [activeDoc, setActiveDoc] = useState(0);
   const [yearly, setYearly] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState(() => {
+    const featuredIndex = copy.plans.findIndex((plan) => "featured" in plan && plan.featured);
+    return featuredIndex >= 0 ? featuredIndex : 0;
+  });
   const [menuOpen, setMenuOpen] = useState(false);
 
   const visibleWorks = useMemo(
@@ -128,16 +132,24 @@ export default function Home() {
           </div>
         </div>
         <div className="pricing-grid">
-          {copy.plans.map((plan) => (
-            <article className={"featured" in plan && plan.featured ? "price-card featured" : "price-card"} key={plan.name}>
-              <p className="plan-name">{plan.index} / {plan.name}</p>
-              <div className="price"><strong>¥{yearly ? plan.yearly : plan.monthly}</strong><span>/ {yearly ? dictionary.common.year : dictionary.common.month}</span></div>
-              <p className="effective">{yearly ? `${copy.approx} ¥${Math.round(plan.yearly / 12)} / ${dictionary.common.month}` : copy.flexibleMonthly}</p>
-              <p className="plan-note">{plan.note}</p>
-              <ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul>
-              <Link className={"featured" in plan && plan.featured ? "button" : "button button-ghost"} href="/products">{copy.viewProducts} <span>→</span></Link>
-            </article>
-          ))}
+          {copy.plans.map((plan, index) => {
+            const isSelected = selectedPlan === index;
+            return (
+              <article
+                className={isSelected ? "price-card selected" : "price-card"}
+                data-selected={isSelected}
+                key={plan.name}
+                onClick={() => setSelectedPlan(index)}
+              >
+                <p className="plan-name">{plan.index} / {plan.name}</p>
+                <div className="price"><strong>¥{yearly ? plan.yearly : plan.monthly}</strong><span>/ {yearly ? dictionary.common.year : dictionary.common.month}</span></div>
+                <p className="effective">{yearly ? `${copy.approx} ¥${Math.round(plan.yearly / 12)} / ${dictionary.common.month}` : copy.flexibleMonthly}</p>
+                <p className="plan-note">{plan.note}</p>
+                <ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul>
+                <Link className={isSelected ? "button" : "button button-ghost"} href="/products">{copy.viewProducts} <span>→</span></Link>
+              </article>
+            );
+          })}
         </div>
         <div className="pricing-notes"><span>{copy.paymentNote}</span><span>{copy.purchaseHelp} <a href="mailto:hello@gofriends.dev">hello@gofriends.dev</a></span></div>
       </section>
