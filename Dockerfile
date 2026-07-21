@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=docker.m.daocloud.io/library/node:22-alpine
+ARG NODE_IMAGE=node:22-alpine
 
 FROM ${NODE_IMAGE} AS dependencies
 
@@ -7,12 +7,14 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM ${NODE_IMAGE} AS production-dependencies
+FROM ${NODE_IMAGE} AS bootstrap-dependencies
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm init -y \
+    && npm install --omit=dev --no-audit --no-fund --no-save \
+      drizzle-orm@0.45.2 \
+      mysql2@3.22.6
 
 FROM ${NODE_IMAGE} AS builder
 
@@ -38,7 +40,7 @@ RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 gofriends
 
 COPY --from=builder --chown=gofriends:nodejs /app/dist/standalone ./
-COPY --from=production-dependencies --chown=gofriends:nodejs /app/node_modules ./node_modules
+COPY --from=bootstrap-dependencies --chown=gofriends:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=gofriends:nodejs /app/drizzle ./drizzle
 COPY --from=builder --chown=gofriends:nodejs /app/scripts/bootstrap.mjs ./scripts/bootstrap.mjs
 

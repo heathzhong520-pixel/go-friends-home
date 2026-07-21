@@ -4,9 +4,17 @@ import mysql from "mysql2/promise";
 import { drizzle } from "drizzle-orm/mysql2";
 import { migrate } from "drizzle-orm/mysql2/migrator";
 
-const databaseUrl = process.env.DATABASE_URL || (
-  process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASSWORD !== undefined
-    ? `mysql://${encodeURIComponent(process.env.DB_USER)}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:${process.env.DB_PORT || "3306"}/${encodeURIComponent(process.env.DB_NAME || "gofriends-home")}`
+function envValue(name) {
+  const value = process.env[name];
+  if (!value || value.length < 2) return value;
+  const first = value[0];
+  const last = value[value.length - 1];
+  return (first === '"' && last === '"') || (first === "'" && last === "'") ? value.slice(1, -1) : value;
+}
+
+const databaseUrl = envValue("DATABASE_URL") || (
+  envValue("DB_HOST") && envValue("DB_USER") && envValue("DB_PASSWORD") !== undefined
+    ? `mysql://${encodeURIComponent(envValue("DB_USER"))}:${encodeURIComponent(envValue("DB_PASSWORD"))}@${envValue("DB_HOST")}:${envValue("DB_PORT") || "3306"}/${encodeURIComponent(envValue("DB_NAME") || "gofriends-home")}`
     : ""
 );
 if (!databaseUrl) throw new Error("DATABASE_URL or DB_HOST/DB_USER/DB_PASSWORD is not configured");

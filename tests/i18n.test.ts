@@ -16,3 +16,10 @@ test("database URL can be built from split environment values", () => {
     "mysql://site%20user:p%40ss@db.example:3307/gofriends-home",
   );
 });
+
+test("database URL ignores wrapping quotes from Docker env files", () => {
+  assert.equal(
+    resolveDatabaseUrl({ DB_HOST: '"db.example"', DB_PORT: '"3307"', DB_NAME: '"gofriends-home"', DB_USER: '"site user"', DB_PASSWORD: '"p@ss"' }),
+    "mysql://site%20user:p%40ss@db.example:3307/gofriends-home",
+  );
+});
